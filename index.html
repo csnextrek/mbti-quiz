@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老闆記帳 MBTI 測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-main: #5ECAD6;
+    --blue-deep: #3aacba;
+    --blue-richer: #2d96a4;
+    --blue-mid: #8ddce6;
+    --blue-light: #b8edf2;
+    --blue-pale: #e0f7fa;
+    --blue-ghost: #f0fbfc;
+    --white: #ffffff;
+    --ink: #1a3a3f;
+    --ink-mid: #2e6670;
+    --ink-soft: #4a8f9a;
+    --muted: #7ab8c0;
+    --border: #b0dde3;
+    --gold: #c8a84b;
+    --gold-soft: #debb6a;
+    --gold-text: #5a3e00;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'GenJyuuGothic', 'Noto Sans TC', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
+  }
+
+  @font-face {
+    font-family: 'GenJyuuGothic';
+    src: local('源柔ゴシック'), local('Gen Jyuu Gothic'), local('GenJyuuGothic');
+    font-weight: 400;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--blue-pale);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── INTRO ─── */
+  #screen-intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(160deg, #edfafb 0%, #c5eef5 30%, #9ddde8 65%, #5ECAD6 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #screen-intro::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 68%);
+    top: -140px; right: -120px;
+    pointer-events: none;
+  }
+
+  #screen-intro::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(94,202,214,0.25) 0%, transparent 70%);
+    bottom: -80px; left: -80px;
+    pointer-events: none;
+  }
+
+  .intro-card {
+    max-width: 500px;
+    width: 100%;
+    background: rgba(255,255,255,0.74);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(255,255,255,0.88);
+    border-radius: 28px;
+    padding: 2.75rem 2.5rem 0;
+    text-align: center;
+    box-shadow: 0 12px 48px rgba(58,172,186,0.2), 0 2px 10px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .intro-deco-bar {
+    width: 52px; height: 4px;
+    background: linear-gradient(90deg, var(--blue-main), var(--gold));
+    border-radius: 2px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .intro-title {
+    font-family: var(--font);
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .intro-title span { color: var(--blue-deep); }
+
+  .intro-title-sub {
+    color: var(--ink) !important;
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-weight: 500;
+  }
+
+  .intro-sub {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.75rem;
+    line-height: 1.85;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 0 1.5rem;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .meta-item {
+    text-align: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .meta-item + .meta-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 18%; bottom: 18%;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .meta-num {
+    font-family: var(--font);
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--blue-deep);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .meta-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .btn-start {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    background: linear-gradient(135deg, var(--blue-main) 0%, var(--blue-deep) 100%);
+    color: white;
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 0.9rem 3rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 5px 20px rgba(58,172,186,0.4);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 9px 28px rgba(58,172,186,0.48); }
+  .btn-start:active { transform: translateY(0); }
+
+  /* logo zone */
+  .logo-zone {
+    border-top: none;
+    padding: 2rem 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+  }
+
+  .logo-zone-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+
+  .brand-logo {
+    display: block;
+    width: 140px;
+    height: auto;
+  }
+
+  .brand-logo svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .logo-box {
+    width: 130px;
+    height: 44px;
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    background: rgba(255,255,255,0.55);
+  }
+
+  /* ─── QUIZ ─── */
+  #screen-quiz {
+    display: none;
+    min-height: 100vh;
+    padding: 2rem 1rem 3rem;
+    background: linear-gradient(180deg, #e8f9fb 0%, #caf0f5 50%, #a8e6ed 100%);
+  }
+
+  .quiz-wrap { max-width: 640px; margin: 0 auto; }
+
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+    padding: 0.7rem 1.1rem;
+    background: rgba(255,255,255,0.72);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+  }
+
+  .quiz-logo {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ink-mid);
+    letter-spacing: 0.04em;
+  }
+
+  .quiz-progress-text {
+    font-size: 0.76rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .progress-bar-wrap {
+    height: 5px;
+    background: rgba(94,202,214,0.2);
+    border-radius: 3px;
+    margin-bottom: 1.75rem;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #2F7E9A;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .question-card {
+    background: rgba(255,255,255,0.82);
+    border: 1.5px solid rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.1rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 5px 28px rgba(58,172,186,0.12);
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-number {
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--blue-main);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .q-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--blue-light);
+  }
+
+  .q-text {
+    font-size: 1rem;
+    line-height: 1.82;
+    font-weight: 500;
+    margin-bottom: 1.4rem;
+    color: var(--ink);
+  }
+
+  .options { display: flex; flex-direction: column; gap: 0.7rem; }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    background: rgba(240,251,252,0.55);
+    border: 1.5px solid var(--border);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    border-radius: var(--radius-sm);
+    width: 100%;
+  }
+
+  .option-btn:hover {
+    border-color: var(--blue-main);
+    background: rgba(94,202,214,0.09);
+    box-shadow: 0 2px 12px rgba(94,202,214,0.16);
+  }
+
+  .option-btn.selected {
+    border-color: #2F7E9A;
+    border-width: 2px;
+    background: #2F7E9A;
+    color: white;
+    box-shadow: 0 4px 18px rgba(47,126,154,0.35);
+    font-weight: 500;
+  }
+
+  .opt-label {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.67rem;
+    font-weight: 700;
+    margin-top: 1px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    color: var(--muted);
+  }
+
+  .option-btn.selected .opt-label {
+    background: var(--blue-main);
+    border-color: var(--blue-main);
+    color: white;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    margin-top: 0.6rem;
+  }
+
+  .btn-nav {
+    padding: 0.58rem 1.4rem;
+    border: 1.5px solid var(--border);
+    background: rgba(255,255,255,0.75);
+    font-family: var(--font);
+    font-size: 0.83rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 50px;
+    color: var(--ink-mid);
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .btn-nav:hover { border-color: var(--blue-main); background: var(--blue-pale); color: var(--blue-deep); }
+  .btn-nav.primary { background: linear-gradient(135deg, var(--blue-main), var(--blue-deep)); border-color: transparent; color: white; box-shadow: 0 3px 14px rgba(58,172,186,0.32); }
+  .btn-nav.primary:hover { box-shadow: 0 6px 20px rgba(58,172,186,0.42); }
+  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .btn-submit {
+    padding: 0.7rem 2.1rem;
+    border: none;
+    background: #2F7E9A;
+    color: white;
+    font-family: var(--font);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0 4px 18px rgba(47,126,154,0.38);
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: none;
+  }
+
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(47,126,154,0.48); }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* ─── RESULT ─── */
+  #screen-result {
+    display: none;
+    min-height: 100vh;
+    padding: 2rem 1rem 2rem;
+    background: linear-gradient(160deg, #e0f8fb 0%, #b8edf5 40%, #78d2df 100%);
+  }
+
+  .result-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  /* ── 主卡 ── */
+  .result-main-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(58,172,186,0.18);
+    padding: 1.75rem 1.5rem 1.4rem;
+    text-align: center;
+  }
+
+  /* 身份資訊：標題優先 */
+  .result-eyebrow {
+    font-size: 0.85rem;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .result-type-badge {
+    display: block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border: none;
+    background: none;
+    padding: 0;
+  }
+
+  .result-headline {
+    font-family: var(--font);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--blue-deep);
+    line-height: 1.3;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  /* 小圓形圖片 */
+  .result-img-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 1.2rem auto;
+    border: none;
+    box-shadow: 0 4px 16px rgba(58,172,186,0.2);
+    background: linear-gradient(135deg, #d8f4f8, #aee8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .result-img-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .result-img-circle .circle-type {
+    font-family: var(--font);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--blue-deep);
+    opacity: 0.6;
+    letter-spacing: 0.12em;
+    text-align: center;
+  }
+
+  .result-img-circle .circle-note {
+    font-size: 0.55rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 0 8px;
+    line-height: 1.4;
+  }
+
+  /* 人格解說 */
+  .result-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--ink);
+    text-align: justify;
+    text-align-last: left;
+    padding: 0.75rem 0.5rem 1rem;
+  }
+
+  /* 三關鍵字 */
+  .result-keywords {
+    display: flex;
+    justify-content: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .keyword-tag {
+    background: rgba(94,202,214,0.1);
+    border: 1.5px solid var(--blue-light);
+    padding: 0.35rem 1rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    border-radius: 50px;
+  }
+
+  /* ── 並列卡 ── */
+  .result-bottom-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .result-section-card {
+    background: white;
+    border-radius: 18px;
+    padding: 1.1rem 1.1rem;
+    box-shadow: 0 4px 18px rgba(58,172,186,0.12);
+    flex: 3;
+  }
+
+  .result-section-card.accent {
+    background: white;
+    border: 1.5px solid var(--blue-light);
+    flex: 2;
+  }
+
+  .section-label {
+    display: inline-block;
+    background: var(--blue-main);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.22rem 0.75rem;
+    border-radius: 50px;
+    margin-bottom: 0.75rem;
+  }
+
+  .result-section-card.accent .section-label {
+    background: #2F7E9A;
+  }
+
+  .section-body {
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  /* ── 再測一次 ── */
+  .result-logo-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 0.5rem;
+  }
+
+  .result-logo-wrap .brand-logo {
+    width: 120px;
+  }
+
+  .btn-retry {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: white;
+    border: 1.5px solid var(--ink-mid);
+    padding: 0.72rem 2.5rem;
+    font-family: var(--font);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 50px;
+    color: var(--ink-mid);
+    transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-retry:hover {
+    border-color: var(--blue-main);
+    color: var(--blue-deep);
+    box-shadow: 0 4px 16px rgba(94,202,214,0.22);
+    background: var(--blue-ghost);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════ INTRO ════ -->
+<div id="screen-intro">
+  <div class="intro-card">
+    <h1 class="intro-title"><span>測測你是哪種 MBTI 老闆</span><br><span class="intro-title-sub">12 題揭曉你的老闆體質＋經營財務小建議</span></h1>
+    <button class="btn-start" onclick="startQuiz()">開始測驗 →</button>
+    <div class="logo-zone">
+      <div class="brand-logo"><svg id="_圖層_1" data-name="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 150">
+  <!-- Generator: Adobe Illustrator 30.4.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 226)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#_未命名漸層_14);
+      }
+
+      .st1 {
+        fill: #fff;
+      }
+
+      .st2 {
+        fill: #5ecad6;
+      }
+
+      .st3 {
+        fill: #25a3a8;
+      }
+    </style>
+    <linearGradient id="_未命名漸層_14" data-name="未命名漸層 14" x1="24.94" y1="76.15" x2="112.06" y2="76.15" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5ecad6"/>
+      <stop offset=".23" stop-color="#59c7d2"/>
+      <stop offset=".48" stop-color="#4cbec8"/>
+      <stop offset=".73" stop-color="#37afb7"/>
+      <stop offset=".9" stop-color="#25a3a8"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <g>
+      <path class="st0" d="M110.95,85.43l-23.42-48.06c-2.55-5.24-7.74-8.26-13.57-7.91-2.37.15-4.64.86-6.59,2.06-2.36-1.42-5.13-1.98-7.98-1.82-5.02.23-10.44,3.82-12.31,9.25l-21.74,63.37c-1.32,3.84.73,8.06,4.56,9.41,1.88.66,3.9.55,5.7-.32,1.79-.87,3.14-2.39,3.78-4.27l23.25-67.77c.32-.93.74-1.83,1.24-2.65.76-1.24,2.08-1.99,3.52-2,0,0,.02,0,.03,0,1.41,0,2.7.72,3.45,1.92.27.43.52.89.75,1.35l27.88,58.25c.27.55,1.63,3.61,1.75,4.28.37,2.08.19,3.79-1.5,5.67-1.04,1.16-2.29,1.67-3.97,1.84-.77.08-2.33-.02-2.95,0h-36.65c-2.04,0-4.03.84-5.48,2.31-1.4,1.43-2.16,3.28-2.13,5.23.07,4.02,3.39,7.29,7.41,7.29h27.31c6.7,0,12.85-2.96,16.4-8.96,1.07-1.81,1.9-3.72,2.36-5.74,3.31-1.73,5.84-4.36,7.46-7.07,2.41-4.05,3.56-9.8,1.44-15.65Z"/>
+      <circle class="st3" cx="32.37" cy="104.73" r="7.43"/>
+      <circle class="st2" cx="56.01" cy="115.43" r="7.43"/>
+    </g>
+    <g>
+      <g>
+        <path class="st2" d="M244.7,78.74h-13.33c-1.92,0-3.47-1.55-3.47-3.47s1.55-3.47,3.47-3.47h13.33c1.92,0,3.47,1.55,3.47,3.47s-1.55,3.47-3.47,3.47Z"/>
+        <path class="st2" d="M244.53,56.33h-12.51c-2.01,0-3.64-1.63-3.64-3.64s1.63-3.64,3.64-3.64h12.51c2.01,0,3.64,1.63,3.64,3.64s-1.63,3.64-3.64,3.64Z"/>
+        <path class="st2" d="M230.02,113.68c-1.58,0-3.03-1.05-3.46-2.65-.52-1.91.61-3.89,2.53-4.4,7.34-1.99,11.9-8.35,11.9-14.47v-16.32c0-1.98,1.61-3.59,3.59-3.59s3.59,1.61,3.59,3.59v16.32c0,9.36-6.75,18.57-17.21,21.4-.31.09-.63.13-.94.13Z"/>
+        <path class="st2" d="M277.09,113.73c-7.42,0-14.49-.34-18.41-1.16-9.48-1.98-15.07-6.58-18.13-14.92-.68-1.86.27-3.92,2.14-4.61,1.86-.68,3.92.27,4.61,2.14,2.19,5.98,5.79,8.88,12.85,10.36,7.62,1.59,30.59,1.08,39.1-.11,1.98-.28,3.78,1.1,4.05,3.06.28,1.96-1.09,3.78-3.06,4.05-5.09.71-14.37,1.19-23.15,1.19Z"/>
+        <path class="st2" d="M251.1,67.95c-1.08,0-2.14-.52-2.8-1.5-1.07-1.57-.67-3.73.87-4.81,5.93-4.15,14.98-12.99,18.25-17.79,1.63-2.39,4.15-3.85,6.9-3.98,2.81-.14,5.5,1.08,7.37,3.34,4.25,5.11,16.13,15.89,20.16,18.53,1.58,1.03,2.04,3.17,1.02,4.78-1.01,1.61-3.11,2.07-4.7,1.04-4.96-3.24-17.49-14.84-21.68-19.89-.5-.6-1.17-.92-1.85-.89-.64.03-1.21.38-1.63,1.01-1.04,1.53-11.71,13.76-19.99,19.55-.59.41-1.26.61-1.92.61Z"/>
+        <path class="st2" d="M286.54,65.43h-23.07c-1.69,0-3.06-1.37-3.06-3.06s1.37-3.06,3.06-3.06h23.07c1.69,0,3.06,1.37,3.06,3.06s-1.37,3.06-3.06,3.06Z"/>
+        <path class="st2" d="M295.31,78.36h-40.61c-1.69,0-3.06-1.37-3.06-3.06s1.37-3.06,3.06-3.06h40.61c1.69,0,3.06,1.37,3.06,3.06s-1.37,3.06-3.06,3.06Z"/>
+        <path class="st2" d="M271.01,102c-.53,0-1.45,0-2.06-.01-.82,0-.42-.02-1.48-.02-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32c1.08,0,.7,0,1.54.02,1.11.01,2.24.02,3.04,0,0-.39,0-.83,0-1.25v-30.55c0-1.84,1.49-3.32,3.32-3.32s3.67,1.49,3.67,3.32v30.54c0,2.62,0,4.68-1.61,6.28-1.47,1.45-3.26,1.65-6.43,1.65Z"/>
+        <path class="st2" d="M255.42,96.74c-1.25.17-2.55-.39-3.26-1.53-.98-1.55-.51-3.61,1.05-4.58,3.32-2.08,5.73-4.45,7.83-7.69,1-1.54,3.06-1.98,4.6-.98,1.54,1,1.98,3.06.98,4.6-2.62,4.04-5.75,7.12-9.87,9.71-.42.26-.87.42-1.32.48Z"/>
+        <path class="st2" d="M295.38,97.4c-.95-.12-1.85-.65-2.4-1.53-1.8-2.88-4.84-5.79-8.56-8.2-1.54-1-1.98-3.06-.98-4.6,1-1.54,3.06-1.98,4.6-.98,3.19,2.07,7.61,5.52,10.57,10.24.98,1.56.51,3.61-1.05,4.58-.68.42-1.45.58-2.19.48Z"/>
+      </g>
+      <g>
+        <path class="st2" d="M338.96,47.95h-16.38c-1.76,0-3.19-1.43-3.19-3.19s1.43-3.19,3.19-3.19h16.38c1.76,0,3.19,1.43,3.19,3.19s-1.43,3.19-3.19,3.19Z"/>
+        <path class="st2" d="M376.66,70.29h-21.54c-1.84,0-3.32,1.49-3.32,3.32,0,1.84,1.49,3.32,3.32,3.32h21.54c1.84,0,3.32-1.49,3.32-3.32,0-1.84-1.49-3.32-3.32-3.32Z"/>
+        <path class="st2" d="M340.29,71.03h-19.04c-1.76,0-3.19-1.43-3.19-3.19s1.43-3.19,3.19-3.19h19.04c1.76,0,3.19,1.43,3.19,3.19s-1.43,3.19-3.19,3.19Z"/>
+        <path class="st2" d="M340.29,82.37h-19.04c-1.76,0-3.19-1.43-3.19-3.19s1.43-3.19,3.19-3.19h19.04c1.76,0,3.19,1.43,3.19,3.19s-1.43,3.19-3.19,3.19Z"/>
+        <path class="st2" d="M345.31,59.68h-29.07c-1.76,0-3.19-1.43-3.19-3.19s1.43-3.19,3.19-3.19h29.07c1.76,0,3.19,1.43,3.19,3.19s-1.43,3.19-3.19,3.19Z"/>
+        <path class="st2" d="M341.06,92.95h-21.05c-1.65,0-2.99-1.34-2.99-2.99s1.34-2.99,2.99-2.99h21.05c1.65,0,2.99,1.34,2.99,2.99s-1.34,2.99-2.99,2.99Z"/>
+        <path class="st2" d="M333.62,112.69h-13.6c-1.65,0-2.99-1.34-2.99-2.99s1.34-2.99,1.66-2.99h16.26c2.98,0,2.99,1.34,2.99,2.99s-2.67,2.99-4.32,2.99Z"/>
+        <path class="st2" d="M320.01,112.66c-1.91,0-3.46-1.55-3.46-3.46v-18.58c0-1.91,1.55-3.46,3.46-3.46s3.69,1.55,3.69,3.46v18.58c0,1.91-1.78,3.46-3.69,3.46Z"/>
+        <path class="st2" d="M341.06,106.15c-1.91,0-3.69.89-3.69-2.35v-14.51c0-.58,1.78-2.13,3.69-2.13s3.46,1.55,3.46,3.46v10.74c0,1.91-1.55,4.79-3.46,4.79Z"/>
+        <path class="st2" d="M383.48,44.35c-.58-.95-1.63-1.59-2.83-1.59h-25.53c-1.84,0-3.32,1.49-3.32,3.32s1.49,3.32,3.32,3.32h21.88s0,19.4,0,19.4c0,2.02,1.64,3.66,3.66,3.66s3.66-1.64,3.66-3.66v-22.16c0-.87-.32-1.66-.83-2.29Z"/>
+        <path class="st2" d="M333.62,112.69c7.81,0,10.9-4.55,10.9-11.34,0-4-5.24,5.72-5.24,5.72l-5.67,5.62Z"/>
+        <path class="st2" d="M334.01,106.71c2.26,0,3.36-1.58,3.36-3.86,0-.79,4.06,4.21,4.06,4.21l-3.28,3.43-4.13-3.79Z"/>
+        <path class="st2" d="M375.76,112.75h-16.67c-3.48,0-7.64-1.37-7.64-7.91v-30.89c0-2.02,1.64-3.66,3.66-3.66s3.77,1.64,3.77,3.66v30.89c0,.24,0,.43.02.59.09,0,.19,0,.3,0h16.56c5.23,0,6.56-3.17,6.56-9.42,0-2.02,1.64-3.66,3.66-3.66s3.66,1.64,3.66,3.66c0,10.32-4.49,16.73-13.87,16.73ZM358.98,105.95h.01s-.01,0-.01,0Z"/>
+        <path class="st2" d="M384.31,68.8c0,3.48-3.56,8.14-7.65,8.14s-3.37-6.65-1.92-6.65,2.25-.95,2.25-1.95c0-.99,7.31.46,7.31.46Z"/>
+      </g>
+      <g>
+        <path class="st2" d="M211.81,50.85h-65.15c-1.8,0-3.26-1.46-3.26-3.26s1.46-3.26,3.26-3.26h65.15c1.8,0,3.26,1.46,3.26,3.26s-1.46,3.26-3.26,3.26Z"/>
+        <g>
+          <path class="st2" d="M167.83,54.87c-2.02,0-3.66-1.64-3.66-3.66v-9.1c0-2.02,1.64-3.66,3.66-3.66s3.66,1.64,3.66,3.66v9.1c0,2.02-1.64,3.66-3.66,3.66Z"/>
+          <path class="st2" d="M190.64,54.87c-2.02,0-3.66-1.64-3.66-3.66v-9.1c0-2.02,1.64-3.66,3.66-3.66s3.66,1.64,3.66,3.66v9.1c0,2.02-1.64,3.66-3.66,3.66Z"/>
+        </g>
+        <path class="st2" d="M178.47,83.39h-23.3c-1.47,0-2.66,1.19-2.66,2.66,0,1.47,2.52,2.66,3.99,2.66h21.97c1.47,0,2.66-1.19,2.66-2.66,0-1.47-1.19-2.66-2.66-2.66Z"/>
+        <path class="st2" d="M174.69,70.13h-15.66c-1.1,0-1.99-.89-1.99-1.99s.89-1.99,1.99-1.99h15.66c1.1,0,1.99.89,1.99,1.99s-.89,1.99-1.99,1.99Z"/>
+        <path class="st2" d="M174.69,78.6h-15.66c-1.1,0-1.99-.89-1.99-1.99s.89-1.99,1.99-1.99h15.66c1.1,0,1.99.89,1.99,1.99s-.89,1.99-1.99,1.99Z"/>
+        <path class="st2" d="M178.47,56.55h-27.27c-1.47,0-2.66,1.19-2.66,2.66,0,1.47,1.19,2.66,2.66,2.66h27.27c1.47,0,2.66-1.19,2.66-2.66,0-1.47-1.19-2.66-2.66-2.66Z"/>
+        <path class="st2" d="M151.2,56.59c-1.84,0-3.32,1.49-3.32,3.32v19.87c0,1.84,1.49,3.32,3.32,3.32,1.84,0,3.32-1.49,3.32-3.32v-19.87c0-1.84-1.49-3.32-3.32-3.32Z"/>
+        <path class="st2" d="M157.09,112.15c-1.91,0-3.46-1.55-3.46-3.46v-12.98c0-1.91,1.55-3.46,3.46-3.46s3.46,1.55,3.46,3.46v12.98c0,1.91-1.55,3.46-3.46,3.46Z"/>
+        <path class="st2" d="M171.91,112.02c-1.84,0-3.32-1.49-3.32-3.32v-13.19c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v13.19c0,1.84-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M186.5,112.02c-1.84,0-3.32-1.49-3.32-3.32v-13.19c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v13.19c0,1.84-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M201.46,112.15c-1.91,0-3.46-1.55-3.46-3.46v-12.98c0-1.91,1.55-3.46,3.46-3.46s3.46,1.55,3.46,3.46v12.98c0,1.91-1.55,3.46-3.46,3.46Z"/>
+        <path class="st2" d="M174.03,78.44c-1.54,0-2.79-1.25-2.79-2.79v-6.45c0-1.54,1.25-2.79,2.79-2.79s2.79,1.25,2.79,2.79v6.45c0,1.54-1.25,2.79-2.79,2.79Z"/>
+        <path class="st2" d="M165.43,69.83c-1.65,0-2.99-1.34-2.99-2.99v-6.05c0-1.65,1.34-2.99,2.99-2.99s2.99,1.34,2.99,2.99v6.05c0,1.65-1.34,2.99-2.99,2.99Z"/>
+        <path class="st2" d="M165.43,87.34c-1.65,0-2.99-1.34-2.99-2.99v-6.05c0-1.65,1.34-2.99,2.99-2.99s2.99,1.34,2.99,2.99v6.05c0,1.65-1.34,2.99-2.99,2.99Z"/>
+        <path class="st2" d="M182.24,77.25c-.84,0-1.68-.32-2.33-.95-1.31-1.29-1.33-3.39-.04-4.7,3.28-3.34,7.36-10.03,8.62-13,.72-1.69,2.67-2.48,4.36-1.76,1.69.72,2.48,2.67,1.76,4.36-1.31,3.09-5.78,10.77-10,15.07-.65.66-1.51.99-2.37.99Z"/>
+        <path class="st2" d="M210.18,69.46h-20.17c-1.65,0-2.99-1.34-2.99-2.99s1.34-2.99,2.99-2.99h20.17c1.65,0,2.99,1.34,2.99,2.99s-1.34,2.99-2.99,2.99Z"/>
+        <path class="st2" d="M209.85,84.56h-22.82c-1.65,0-2.99-1.34-2.99-2.99s1.34-2.99,2.99-2.99h22.82c1.65,0,2.99,1.34,2.99,2.99s-1.34,2.99-2.99,2.99Z"/>
+        <path class="st2" d="M200.53,97.42h-42.48c-1.47,0-2.66-1.19-2.66-2.66s1.19-2.66,2.66-2.66h42.48c1.47,0,2.66,1.19,2.66,2.66s-1.19,2.66-2.66,2.66Z"/>
+        <path class="st2" d="M212.9,113.35h-67.24c-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32h67.24c1.84,0,3.32,1.49,3.32,3.32s-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M147.88,79.79c0,5.14,3.63,8.92,8.62,8.92,0,0,3.11-5.32,1.16-5.32s-3.13-1.83-3.13-3.6-6.65,0-6.65,0Z"/>
+      </g>
+      <g>
+        <path class="st2" d="M425.51,62.24h-22.26c-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32h22.26c1.84,0,3.32,1.49,3.32,3.32s-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M414.38,115.14c-1.84,0-3.32-1.49-3.32-3.32v-40.55c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v40.55c0,1.84-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M403.25,94.28c-1.84,0-3.32-1.49-3.32-3.32v-32c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v32c0,1.84-1.49,3.32-3.32,3.32Z"/>
+        <path class="st2" d="M414.38,60.58c-1.84,0-3.32-1.49-3.32-3.32v-14.33c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v14.33c0,1.84-1.49,3.32-3.32,3.32Z"/>
+        <g>
+          <path class="st2" d="M466.48,48.89h-24.5c-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32h24.5c1.84,0,3.32,1.49,3.32,3.32s-1.49,3.32-3.32,3.32Z"/>
+          <path class="st2" d="M470.84,82.44h-42.3c-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32h42.3c1.84,0,3.32,1.49,3.32,3.32s-1.49,3.32-3.32,3.32Z"/>
+          <path class="st2" d="M437.99,109.77c-1.84,0-3.32-1.49-3.32-3.32v-56.86c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v56.86c0,1.84-1.49,3.32-3.32,3.32Z"/>
+          <path class="st2" d="M462.99,59.8h-25c-1.54,0-2.79-1.25-2.79-2.79s1.25-2.79,2.79-2.79h25c1.54,0,2.79,1.25,2.79,2.79s-1.25,2.79-2.79,2.79Z"/>
+          <path class="st2" d="M462.99,70.93h-25c-1.54,0-2.79-1.25-2.79-2.79s1.25-2.79,2.79-2.79h25c1.54,0,2.79,1.25,2.79,2.79s-1.25,2.79-2.79,2.79Z"/>
+          <path class="st2" d="M428.42,113.84c-1.55,0-2.94-1.1-3.26-2.68-.36-1.8.81-3.55,2.62-3.91,7.28-1.44,13.33-3.6,18.49-6.62,1.58-.92,3.62-.39,4.55,1.2.93,1.59.39,3.62-1.19,4.55-5.81,3.39-12.53,5.81-20.55,7.4-.22.04-.44.06-.65.06Z"/>
+          <path class="st2" d="M458.68,100.45c-1.07,0-2.11-.51-2.76-1.46-1.03-1.52-.63-3.59.89-4.62l9.71-6.57c1.52-1.03,3.59-.63,4.62.89,1.03,1.52.63,3.59-.89,4.62l-9.71,6.57c-.57.39-1.22.57-1.86.57Z"/>
+          <path class="st2" d="M471.73,113.84c-.48,0-.98-.11-1.44-.33-10.4-5.02-20.14-16.1-23.08-24.44-.61-1.73.3-3.63,2.03-4.24,1.73-.61,3.63.3,4.24,2.03,2.42,6.89,11.01,16.47,19.69,20.66,1.65.8,2.35,2.79,1.55,4.44-.57,1.19-1.76,1.88-3,1.88Z"/>
+        </g>
+        <path class="st2" d="M434.67,49.59c0-2.9,2.51-7.35,7.31-7.35s2.19,6.65.8,6.65c-.98,0-1.46.59-1.46,1.38s-6.65-.68-6.65-.68Z"/>
+        <path class="st2" d="M423.4,93.75c-.86,0-1.72-.33-2.37-.99-1.29-1.31-1.27-3.41.03-4.7.42-.42.9-.89,1.07-1.1.05-.35.05-1.29.05-2.2v-25.8c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v25.8c0,4.29-.21,5.19-3.11,8.04-.65.64-1.49.96-2.33.96Z"/>
+      </g>
+    </g>
+  </g>
+</svg></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ QUIZ ════ -->
+<div id="screen-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <div class="quiz-logo">測測你是哪種 MBTI 老闆</div>
+      <div class="quiz-progress-text" id="progress-text">1 / 20</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+    <div id="question-area"></div>
+    <div class="nav-row">
+      <button class="btn-nav" id="btn-prev" onclick="prevQ()">← 上一題</button>
+      <button class="btn-nav primary" id="btn-next" onclick="nextQ()">下一題 →</button>
+      <button class="btn-submit" id="btn-submit" onclick="submitQuiz()">揭曉結果 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ RESULT ════ -->
+<div id="screen-result">
+  <div class="result-wrap">
+
+    <!-- 主卡 -->
+    <div class="result-main-card">
+      <!-- 1. 標題最優先 -->
+      <p class="result-eyebrow">你是</p>
+      <div class="result-type-badge" id="res-type"></div>
+      <div class="result-headline" id="res-headline"></div>
+
+      <!-- 2. 小圓圖 -->
+      <div class="result-img-circle" id="res-img-placeholder">
+
+      </div>
+
+      <!-- 3. 人格解說 -->
+      <div class="result-desc" id="res-desc">（人格特質解說，50字以內）</div>
+
+      <!-- 4. 關鍵字 -->
+      <div class="result-keywords" id="res-keywords"></div>
+    </div>
+
+    <button class="btn-retry" onclick="retryQuiz()">再測一次</button>
+
+    <div style="flex:1;"></div>
+
+    <!-- 置底 Logo -->
+    <div class="result-logo-wrap"><div class="brand-logo"><!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 500 150" style="enable-background:new 0 0 500 150;" xml:space="preserve">
+<style type="text/css">
+	.st0_WLOGO{fill:#FFFFFF;}
+	.st1_WLOGO{fill:url(#SVGID_1_);}
+	.st2_WLOGO{fill:#25A3A8;}
+	.st3_WLOGO{fill:#5ECAD6;}
+	.st4_WLOGO{fill:url(#SVGID_2_);}
+	.st5_WLOGO{fill:url(#SVGID_3_);}
+	.st6_WLOGO{fill:url(#SVGID_4_);}
+	.st7_WLOGO{fill:url(#SVGID_5_);}
+	.st8_WLOGO{fill:url(#SVGID_6_);}
+	.st9_WLOGO{fill:url(#SVGID_7_);}
+	.st10_WLOGO{fill:url(#SVGID_8_);}
+	.st11_WLOGO{fill:url(#SVGID_9_);}
+	.st12_WLOGO{fill:url(#SVGID_10_);}
+</style>
+<g>
+	<g>
+		<path class="st0_WLOGO" d="M110.95,84.28L87.53,36.22c-2.55-5.24-7.74-8.26-13.57-7.91c-2.37,0.15-4.64,0.86-6.59,2.06
+			c-2.36-1.42-5.13-1.98-7.98-1.82c-5.02,0.23-10.44,3.82-12.31,9.25l-21.74,63.37c-1.32,3.84,0.73,8.06,4.56,9.41
+			c1.88,0.66,3.9,0.55,5.7-0.32c1.79-0.87,3.14-2.39,3.78-4.27l23.25-67.77c0.32-0.93,0.74-1.83,1.24-2.65
+			c0.76-1.24,2.08-1.99,3.52-2c0.01,0,0.02,0,0.03,0c1.41,0,2.7,0.72,3.45,1.92c0.27,0.43,0.52,0.89,0.75,1.35L99.49,95.1
+			c0.27,0.55,1.63,3.61,1.75,4.28c0.37,2.08,0.19,3.79-1.5,5.67c-1.04,1.16-2.29,1.67-3.97,1.84c-0.77,0.08-2.33-0.02-2.95,0
+			l-36.65,0c-2.04,0-4.03,0.84-5.48,2.31c-1.4,1.43-2.16,3.28-2.13,5.23c0.07,4.02,3.39,7.29,7.41,7.29l27.31,0
+			c6.7,0,12.85-2.96,16.4-8.96c1.07-1.81,1.9-3.72,2.36-5.74c3.31-1.73,5.84-4.36,7.46-7.07C111.92,95.88,113.07,90.13,110.95,84.28
+			z"/>
+		<circle class="st2_WLOGO" cx="32.37" cy="103.59" r="7.43"/>
+		<circle class="st3_WLOGO" cx="56.01" cy="114.28" r="7.43"/>
+	</g>
+	<g>
+		<g>
+			<path class="st0_WLOGO" d="M244.7,77.59l-13.33,0c-1.92,0-3.47-1.55-3.47-3.47c0-1.92,1.55-3.47,3.47-3.47h13.33
+				c1.92,0,3.47,1.55,3.47,3.47C248.17,76.04,246.62,77.59,244.7,77.59z"/>
+			<path class="st0_WLOGO" d="M244.53,55.18l-12.51,0c-2.01,0-3.64-1.63-3.64-3.64c0-2.01,1.63-3.64,3.64-3.64l12.51,0
+				c2.01,0,3.64,1.63,3.64,3.64S246.54,55.18,244.53,55.18z"/>
+			<path class="st0_WLOGO" d="M230.02,112.53c-1.58,0-3.03-1.05-3.46-2.65c-0.52-1.91,0.61-3.89,2.53-4.4c7.34-1.99,11.9-8.35,11.9-14.47
+				l0-16.32c0-1.98,1.61-3.59,3.59-3.59s3.59,1.61,3.59,3.59l0,16.32c0,9.36-6.75,18.57-17.21,21.4
+				C230.65,112.49,230.33,112.53,230.02,112.53z"/>
+			<path class="st0_WLOGO" d="M277.09,112.59c-7.42,0-14.49-0.34-18.41-1.16c-9.48-1.98-15.07-6.58-18.13-14.92
+				c-0.68-1.86,0.27-3.92,2.14-4.61c1.86-0.68,3.92,0.27,4.61,2.14c2.19,5.98,5.79,8.88,12.85,10.36c7.62,1.59,30.59,1.08,39.1-0.11
+				c1.98-0.28,3.78,1.1,4.05,3.06c0.28,1.96-1.09,3.78-3.06,4.05C295.15,112.11,285.88,112.59,277.09,112.59z"/>
+			<path class="st0_WLOGO" d="M251.1,66.81c-1.08,0-2.14-0.52-2.8-1.5c-1.07-1.57-0.67-3.73,0.87-4.81c5.93-4.15,14.98-12.99,18.25-17.79
+				c1.63-2.39,4.15-3.85,6.9-3.98c2.81-0.14,5.5,1.08,7.37,3.34c4.25,5.11,16.13,15.89,20.16,18.53c1.58,1.03,2.04,3.17,1.02,4.78
+				c-1.01,1.61-3.11,2.07-4.7,1.04c-4.96-3.24-17.49-14.84-21.68-19.89c-0.5-0.6-1.17-0.92-1.85-0.89
+				c-0.64,0.03-1.21,0.38-1.63,1.01c-1.04,1.53-11.71,13.76-19.99,19.55C252.44,66.61,251.77,66.81,251.1,66.81z"/>
+			<path class="st0_WLOGO" d="M286.54,64.29l-23.07,0c-1.69,0-3.06-1.37-3.06-3.06s1.37-3.06,3.06-3.06l23.07,0
+				c1.69,0,3.06,1.37,3.06,3.06S288.23,64.29,286.54,64.29z"/>
+			<path class="st0_WLOGO" d="M295.31,77.21l-40.61,0c-1.69,0-3.06-1.37-3.06-3.06c0-1.69,1.37-3.06,3.06-3.06l40.61,0
+				c1.69,0,3.06,1.37,3.06,3.06S297,77.21,295.31,77.21z"/>
+			<path class="st0_WLOGO" d="M271.01,100.85c-0.53,0-1.45-0.01-2.06-0.01c-0.82-0.01-0.42-0.02-1.48-0.02c-1.84,0-3.32-1.49-3.32-3.32
+				s1.49-3.32,3.32-3.32c1.08,0,0.7,0.01,1.54,0.02c1.11,0.01,2.24,0.02,3.04-0.01c0.01-0.39,0.01-0.83,0.01-1.25V62.38
+				c0-1.84,1.49-3.32,3.32-3.32c1.84,0,3.67,1.49,3.67,3.32v30.54c0,2.62,0,4.68-1.61,6.28
+				C275.97,100.65,274.18,100.85,271.01,100.85z"/>
+			<path class="st0_WLOGO" d="M255.42,95.59c-1.25,0.17-2.55-0.39-3.26-1.53c-0.98-1.55-0.51-3.61,1.05-4.58
+				c3.32-2.08,5.73-4.45,7.83-7.69c1-1.54,3.06-1.98,4.6-0.98c1.54,1,1.98,3.06,0.98,4.6c-2.62,4.04-5.75,7.12-9.87,9.71
+				C256.33,95.37,255.88,95.53,255.42,95.59z"/>
+			<path class="st0_WLOGO" d="M295.38,96.26c-0.95-0.12-1.85-0.65-2.4-1.53c-1.8-2.88-4.84-5.79-8.56-8.2c-1.54-1-1.98-3.06-0.98-4.6
+				c1-1.54,3.06-1.98,4.6-0.98c3.19,2.07,7.61,5.52,10.57,10.24c0.98,1.56,0.51,3.61-1.05,4.58
+				C296.89,96.2,296.11,96.35,295.38,96.26z"/>
+		</g>
+		<g>
+			<path class="st0_WLOGO" d="M338.96,46.81l-16.38,0c-1.76,0-3.19-1.43-3.19-3.19c0-1.76,1.43-3.19,3.19-3.19l16.38,0
+				c1.76,0,3.19,1.43,3.19,3.19C342.15,45.38,340.72,46.81,338.96,46.81z"/>
+			<path class="st0_WLOGO" d="M376.66,69.15l-21.54,0c-1.84,0-3.32,1.49-3.32,3.32c0,1.84,1.49,3.32,3.32,3.32h21.54
+				c1.84,0,3.32-1.49,3.32-3.32S378.5,69.15,376.66,69.15z"/>
+			<path class="st0_WLOGO" d="M340.29,69.88l-19.04,0c-1.76,0-3.19-1.43-3.19-3.19c0-1.76,1.43-3.19,3.19-3.19l19.04,0
+				c1.76,0,3.19,1.43,3.19,3.19C343.48,68.45,342.05,69.88,340.29,69.88z"/>
+			<path class="st0_WLOGO" d="M340.29,81.23l-19.04,0c-1.76,0-3.19-1.43-3.19-3.19s1.43-3.19,3.19-3.19l19.04,0
+				c1.76,0,3.19,1.43,3.19,3.19S342.05,81.23,340.29,81.23z"/>
+			<path class="st0_WLOGO" d="M345.31,58.54l-29.07,0c-1.76,0-3.19-1.43-3.19-3.19c0-1.76,1.43-3.19,3.19-3.19l29.07,0
+				c1.76,0,3.19,1.43,3.19,3.19C348.5,57.11,347.07,58.54,345.31,58.54z"/>
+			<path class="st0_WLOGO" d="M341.06,91.8l-21.05,0c-1.65,0-2.99-1.34-2.99-2.99c0-1.65,1.34-2.99,2.99-2.99l21.05,0
+				c1.65,0,2.99,1.34,2.99,2.99C344.06,90.46,342.72,91.8,341.06,91.8z"/>
+			<path class="st0_WLOGO" d="M333.62,111.55h-13.6c-1.65,0-2.99-1.34-2.99-2.99s1.34-2.99,1.66-2.99h16.26c2.98,0,2.99,1.34,2.99,2.99
+				S335.27,111.55,333.62,111.55z"/>
+			<path class="st0_WLOGO" d="M320.01,111.51c-1.91,0-3.46-1.55-3.46-3.46V89.48c0-1.91,1.55-3.46,3.46-3.46s3.69,1.55,3.69,3.46l0,18.58
+				C323.71,109.97,321.92,111.51,320.01,111.51z"/>
+			<path class="st0_WLOGO" d="M341.06,105c-1.91,0-3.69,0.89-3.69-2.35V88.15c0-0.58,1.78-2.13,3.69-2.13c1.91,0,3.46,1.55,3.46,3.46
+				v10.74C344.52,102.12,342.97,105,341.06,105z"/>
+			<path class="st0_WLOGO" d="M383.48,43.21c-0.58-0.95-1.63-1.59-2.83-1.59l-25.53,0c-1.84,0-3.32,1.49-3.32,3.32
+				c0,1.84,1.49,3.32,3.32,3.32l21.88,0l0,19.4c0,2.02,1.64,3.66,3.66,3.66c2.02,0,3.66-1.64,3.66-3.66V45.5
+				C384.31,44.63,383.99,43.83,383.48,43.21z"/>
+			<path class="st0_WLOGO" d="M333.62,111.55c7.81,0,10.9-4.55,10.9-11.34c0-4-5.24,5.72-5.24,5.72L333.62,111.55z"/>
+			<path class="st0_WLOGO" d="M334.01,105.56c2.26,0,3.36-1.58,3.36-3.86c0-0.79,4.06,4.21,4.06,4.21l-3.28,3.43L334.01,105.56z"/>
+			<path class="st0_WLOGO" d="M375.76,111.6l-16.67,0c-3.48,0-7.64-1.37-7.64-7.91V72.8c0-2.02,1.64-3.66,3.66-3.66
+				c2.02,0,3.77,1.64,3.77,3.66l0,30.89c0,0.24,0.01,0.43,0.02,0.59c0.09,0,0.19,0.01,0.3,0.01l16.56,0c5.23,0,6.56-3.17,6.56-9.42
+				c0-2.02,1.64-3.66,3.66-3.66c2.02,0,3.66,1.64,3.66,3.66C389.64,105.19,385.14,111.6,375.76,111.6z M358.98,104.81h0.01H358.98z"
+				/>
+			<path class="st0_WLOGO" d="M384.31,67.66c0,3.48-3.56,8.14-7.65,8.14c-4.09,0-3.37-6.65-1.92-6.65s2.25-0.95,2.25-1.95
+				S384.31,67.66,384.31,67.66z"/>
+		</g>
+		<g>
+			<path class="st0_WLOGO" d="M211.81,49.7l-65.15,0c-1.8,0-3.26-1.46-3.26-3.26c0-1.8,1.46-3.26,3.26-3.26l65.15,0
+				c1.8,0,3.26,1.46,3.26,3.26C215.06,48.25,213.61,49.7,211.81,49.7z"/>
+			<g>
+				<path class="st0_WLOGO" d="M167.83,53.72c-2.02,0-3.66-1.64-3.66-3.66v-9.1c0-2.02,1.64-3.66,3.66-3.66s3.66,1.64,3.66,3.66v9.1
+					C171.49,52.08,169.85,53.72,167.83,53.72z"/>
+				<path class="st0_WLOGO" d="M190.64,53.72c-2.02,0-3.66-1.64-3.66-3.66l0-9.1c0-2.02,1.64-3.66,3.66-3.66s3.66,1.64,3.66,3.66v9.1
+					C194.29,52.08,192.66,53.72,190.64,53.72z"/>
+			</g>
+			<path class="st0_WLOGO" d="M178.47,82.24l-23.3,0c-1.47,0-2.66,1.19-2.66,2.66s2.52,2.66,3.99,2.66l21.97,0c1.47,0,2.66-1.19,2.66-2.66
+				S179.94,82.24,178.47,82.24z"/>
+			<path class="st0_WLOGO" d="M174.69,68.98l-15.66,0c-1.1,0-1.99-0.89-1.99-1.99s0.89-1.99,1.99-1.99l15.66,0c1.1,0,1.99,0.89,1.99,1.99
+				C176.69,68.09,175.79,68.98,174.69,68.98z"/>
+			<path class="st0_WLOGO" d="M174.69,77.45h-15.66c-1.1,0-1.99-0.89-1.99-1.99s0.89-1.99,1.99-1.99l15.66,0c1.1,0,1.99,0.89,1.99,1.99
+				S175.79,77.45,174.69,77.45z"/>
+			<path class="st0_WLOGO" d="M178.47,55.41l-27.27,0c-1.47,0-2.66,1.19-2.66,2.66s1.19,2.66,2.66,2.66l27.27,0
+				c1.47,0,2.66-1.19,2.66-2.66S179.94,55.41,178.47,55.41z"/>
+			<path class="st0_WLOGO" d="M151.2,55.45c-1.84,0-3.32,1.49-3.32,3.32l0,19.87c0,1.84,1.49,3.32,3.32,3.32c1.84,0,3.32-1.49,3.32-3.32
+				l0-19.87C154.53,56.94,153.04,55.45,151.2,55.45z"/>
+			<path class="st0_WLOGO" d="M157.09,111c-1.91,0-3.46-1.55-3.46-3.46V94.57c0-1.91,1.55-3.46,3.46-3.46c1.91,0,3.46,1.55,3.46,3.46
+				l0,12.98C160.55,109.45,159,111,157.09,111z"/>
+			<path class="st0_WLOGO" d="M171.91,110.87c-1.84,0-3.32-1.49-3.32-3.32V94.35c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32l0,13.19
+				C175.24,109.38,173.75,110.87,171.91,110.87z"/>
+			<path class="st0_WLOGO" d="M186.5,110.87c-1.84,0-3.32-1.49-3.32-3.32V94.35c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v13.19
+				C189.83,109.38,188.34,110.87,186.5,110.87z"/>
+			<path class="st0_WLOGO" d="M201.46,111c-1.91,0-3.46-1.55-3.46-3.46V94.57c0-1.91,1.55-3.46,3.46-3.46c1.91,0,3.46,1.55,3.46,3.46
+				v12.98C204.92,109.45,203.37,111,201.46,111z"/>
+			<path class="st0_WLOGO" d="M174.03,77.29c-1.54,0-2.79-1.25-2.79-2.79v-6.45c0-1.54,1.25-2.79,2.79-2.79s2.79,1.25,2.79,2.79v6.45
+				C176.82,76.04,175.57,77.29,174.03,77.29z"/>
+			<path class="st0_WLOGO" d="M165.43,68.68c-1.65,0-2.99-1.34-2.99-2.99v-6.05c0-1.65,1.34-2.99,2.99-2.99c1.65,0,2.99,1.34,2.99,2.99
+				v6.05C168.42,67.34,167.08,68.68,165.43,68.68z"/>
+			<path class="st0_WLOGO" d="M165.43,86.19c-1.65,0-2.99-1.34-2.99-2.99v-6.05c0-1.65,1.34-2.99,2.99-2.99c1.65,0,2.99,1.34,2.99,2.99
+				l0,6.05C168.42,84.86,167.08,86.19,165.43,86.19z"/>
+			<path class="st0_WLOGO" d="M182.24,76.11c-0.84,0-1.68-0.32-2.33-0.95c-1.31-1.29-1.33-3.39-0.04-4.7c3.28-3.34,7.36-10.03,8.62-13
+				c0.72-1.69,2.67-2.48,4.36-1.76c1.69,0.72,2.48,2.67,1.76,4.36c-1.31,3.09-5.78,10.77-10,15.07
+				C183.96,75.78,183.1,76.11,182.24,76.11z"/>
+			<path class="st0_WLOGO" d="M210.18,68.31l-20.17,0c-1.65,0-2.99-1.34-2.99-2.99c0-1.65,1.34-2.99,2.99-2.99l20.17,0
+				c1.65,0,2.99,1.34,2.99,2.99C213.18,66.97,211.84,68.31,210.18,68.31z"/>
+			<path class="st0_WLOGO" d="M209.85,83.42l-22.82,0c-1.65,0-2.99-1.34-2.99-2.99c0-1.65,1.34-2.99,2.99-2.99l22.82,0
+				c1.65,0,2.99,1.34,2.99,2.99C212.84,82.08,211.5,83.42,209.85,83.42z"/>
+			<path class="st0_WLOGO" d="M200.53,96.27l-42.48,0c-1.47,0-2.66-1.19-2.66-2.66s1.19-2.66,2.66-2.66l42.48,0
+				c1.47,0,2.66,1.19,2.66,2.66S202,96.27,200.53,96.27z"/>
+			<path class="st0_WLOGO" d="M212.9,112.2l-67.24,0c-1.84,0-3.32-1.49-3.32-3.32c0-1.84,1.49-3.32,3.32-3.32l67.24,0
+				c1.84,0,3.32,1.49,3.32,3.32C216.23,110.71,214.74,112.2,212.9,112.2z"/>
+			<path class="st0_WLOGO" d="M147.88,78.64c0,5.14,3.63,8.92,8.62,8.92c0,0,3.11-5.32,1.16-5.32s-3.13-1.83-3.13-3.6
+				C154.53,76.87,147.88,78.64,147.88,78.64z"/>
+		</g>
+		<g>
+			<path class="st0_WLOGO" d="M425.51,61.1l-22.26,0c-1.84,0-3.32-1.49-3.32-3.32s1.49-3.32,3.32-3.32l22.26,0c1.84,0,3.32,1.49,3.32,3.32
+				C428.84,59.61,427.35,61.1,425.51,61.1z"/>
+			<path class="st0_WLOGO" d="M414.38,114c-1.84,0-3.32-1.49-3.32-3.32V70.12c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32l0,40.55
+				C417.71,112.51,416.22,114,414.38,114z"/>
+			<path class="st0_WLOGO" d="M403.25,93.13c-1.84,0-3.32-1.49-3.32-3.32v-32c0-1.84,1.49-3.32,3.32-3.32c1.84,0,3.32,1.49,3.32,3.32l0,32
+				C406.58,91.64,405.09,93.13,403.25,93.13z"/>
+			<path class="st0_WLOGO" d="M414.38,59.43c-1.84,0-3.32-1.49-3.32-3.32V41.78c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v14.33
+				C417.71,57.95,416.22,59.43,414.38,59.43z"/>
+			<g>
+				<path class="st0_WLOGO" d="M466.48,47.74l-24.5,0c-1.84,0-3.32-1.49-3.32-3.32c0-1.84,1.49-3.32,3.32-3.32l24.5,0
+					c1.84,0,3.32,1.49,3.32,3.32S468.32,47.74,466.48,47.74z"/>
+				<path class="st0_WLOGO" d="M470.84,81.29l-42.3,0c-1.84,0-3.32-1.49-3.32-3.32c0-1.84,1.49-3.32,3.32-3.32l42.3,0
+					c1.84,0,3.32,1.49,3.32,3.32C474.16,79.8,472.67,81.29,470.84,81.29z"/>
+				<path class="st0_WLOGO" d="M437.99,108.63c-1.84,0-3.32-1.49-3.32-3.32l0-56.86c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32
+					l0,56.86C441.32,107.14,439.83,108.63,437.99,108.63z"/>
+				<path class="st0_WLOGO" d="M462.99,58.65l-25,0c-1.54,0-2.79-1.25-2.79-2.79s1.25-2.79,2.79-2.79l25,0c1.54,0,2.79,1.25,2.79,2.79
+					S464.54,58.65,462.99,58.65z"/>
+				<path class="st0_WLOGO" d="M462.99,69.78l-25,0c-1.54,0-2.79-1.25-2.79-2.79c0-1.54,1.25-2.79,2.79-2.79l25,0
+					c1.54,0,2.79,1.25,2.79,2.79C465.79,68.53,464.54,69.78,462.99,69.78z"/>
+				<path class="st0_WLOGO" d="M428.42,112.69c-1.55,0-2.94-1.1-3.26-2.68c-0.36-1.8,0.81-3.55,2.62-3.91c7.28-1.44,13.33-3.6,18.49-6.62
+					c1.58-0.92,3.62-0.39,4.55,1.2c0.93,1.59,0.39,3.62-1.19,4.55c-5.81,3.39-12.53,5.81-20.55,7.4
+					C428.85,112.67,428.63,112.69,428.42,112.69z"/>
+				<path class="st0_WLOGO" d="M458.68,99.3c-1.07,0-2.11-0.51-2.76-1.46c-1.03-1.52-0.63-3.59,0.89-4.62l9.71-6.57
+					c1.52-1.03,3.59-0.63,4.62,0.89c1.03,1.52,0.63,3.59-0.89,4.62l-9.71,6.57C459.97,99.12,459.32,99.3,458.68,99.3z"/>
+				<path class="st0_WLOGO" d="M471.73,112.69c-0.48,0-0.98-0.11-1.44-0.33c-10.4-5.02-20.14-16.1-23.08-24.44
+					c-0.61-1.73,0.3-3.63,2.03-4.24c1.73-0.61,3.63,0.3,4.24,2.03c2.42,6.89,11.01,16.47,19.69,20.66c1.65,0.8,2.35,2.79,1.55,4.44
+					C474.15,112,472.97,112.69,471.73,112.69z"/>
+			</g>
+			<path class="st0_WLOGO" d="M434.67,48.44c0-2.9,2.51-7.35,7.31-7.35s2.19,6.65,0.8,6.65c-0.98,0-1.46,0.59-1.46,1.38
+				C441.32,49.93,434.67,48.44,434.67,48.44z"/>
+			<path class="st0_WLOGO" d="M423.4,92.61c-0.86,0-1.72-0.33-2.37-0.99c-1.29-1.31-1.27-3.41,0.03-4.7c0.42-0.42,0.9-0.89,1.07-1.1
+				c0.05-0.35,0.05-1.29,0.05-2.2v-25.8c0-1.84,1.49-3.32,3.32-3.32s3.32,1.49,3.32,3.32v25.8c0,4.29-0.21,5.19-3.11,8.04
+				C425.08,92.29,424.24,92.61,423.4,92.61z"/>
+		</g>
+	</g>
+</g>
+</svg></div></div>
+
+  </div>
+</div>
+
+<script>
+const SVG_MAP = {
+  ENFJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ENFJ{fill:#F6D538;}
+	.st1_ENFJ{fill:#FADFDB;}
+	.st2_ENFJ{fill:#3E3A39;}
+	.st3_ENFJ{fill:#F39800;}
+</style>
+<circle class="st0_ENFJ" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ENFJ" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ENFJ" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ENFJ" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ENFJ" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ENFP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ENFP{fill:#F6D538;}
+	.st1_ENFP{fill:#FADFDB;}
+	.st2_ENFP{fill:#3E3A39;}
+	.st3_ENFP{fill:#F39800;}
+</style>
+<circle class="st0_ENFP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ENFP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ENFP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ENFP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ENFP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ENTJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ENTJ{fill:#F6D538;}
+	.st1_ENTJ{fill:#FADFDB;}
+	.st2_ENTJ{fill:#3E3A39;}
+	.st3_ENTJ{fill:#473535;}
+	.st4_ENTJ{fill:#FD7D27;}
+	.st5_ENTJ{fill:#F39800;}
+	.st6_ENTJ{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_ENTJ" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_ENTJ" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_ENTJ" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_ENTJ" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_ENTJ" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_ENTJ" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_ENTJ" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_ENTJ" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_ENTJ" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_ENTJ" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_ENTJ" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  ENTP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ENTP{fill:#F6D538;}
+	.st1_ENTP{fill:#FADFDB;}
+	.st2_ENTP{fill:#3E3A39;}
+	.st3_ENTP{fill:#F39800;}
+</style>
+<circle class="st0_ENTP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ENTP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ENTP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ENTP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ENTP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ESFJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ESFJ{fill:#F6D538;}
+	.st1_ESFJ{fill:#FADFDB;}
+	.st2_ESFJ{fill:#3E3A39;}
+	.st3_ESFJ{fill:#473535;}
+	.st4_ESFJ{fill:#FD7D27;}
+	.st5_ESFJ{fill:#F39800;}
+	.st6_ESFJ{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_ESFJ" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_ESFJ" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_ESFJ" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_ESFJ" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_ESFJ" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_ESFJ" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_ESFJ" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_ESFJ" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_ESFJ" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_ESFJ" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_ESFJ" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  ESFP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ESFP{fill:#F6D538;}
+	.st1_ESFP{fill:#FADFDB;}
+	.st2_ESFP{fill:#3E3A39;}
+	.st3_ESFP{fill:#473535;}
+	.st4_ESFP{fill:#FD7D27;}
+	.st5_ESFP{fill:#F39800;}
+	.st6_ESFP{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_ESFP" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_ESFP" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_ESFP" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_ESFP" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_ESFP" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_ESFP" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_ESFP" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_ESFP" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_ESFP" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_ESFP" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_ESFP" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  ESTJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ESTJ{fill:#F6D538;}
+	.st1_ESTJ{fill:#FADFDB;}
+	.st2_ESTJ{fill:#3E3A39;}
+	.st3_ESTJ{fill:#F39800;}
+</style>
+<circle class="st0_ESTJ" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ESTJ" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ESTJ" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ESTJ" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ESTJ" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ESTP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ESTP{fill:#F6D538;}
+	.st1_ESTP{fill:#FADFDB;}
+	.st2_ESTP{fill:#3E3A39;}
+	.st3_ESTP{fill:#F39800;}
+</style>
+<circle class="st0_ESTP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ESTP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ESTP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ESTP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ESTP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  INFJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_INFJ{fill:#F6D538;}
+	.st1_INFJ{fill:#FADFDB;}
+	.st2_INFJ{fill:#3E3A39;}
+	.st3_INFJ{fill:#473535;}
+	.st4_INFJ{fill:#FD7D27;}
+	.st5_INFJ{fill:#F39800;}
+	.st6_INFJ{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_INFJ" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_INFJ" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_INFJ" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_INFJ" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_INFJ" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_INFJ" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_INFJ" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_INFJ" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_INFJ" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_INFJ" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_INFJ" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  INFP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_INFP{fill:#F6D538;}
+	.st1_INFP{fill:#FADFDB;}
+	.st2_INFP{fill:#3E3A39;}
+	.st3_INFP{fill:#473535;}
+	.st4_INFP{fill:#FD7D27;}
+	.st5_INFP{fill:#F39800;}
+	.st6_INFP{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_INFP" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_INFP" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_INFP" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_INFP" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_INFP" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_INFP" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_INFP" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_INFP" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_INFP" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_INFP" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_INFP" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  INTJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_INTJ{fill:#F6D538;}
+	.st1_INTJ{fill:#FADFDB;}
+	.st2_INTJ{fill:#3E3A39;}
+	.st3_INTJ{fill:#F39800;}
+</style>
+<circle class="st0_INTJ" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_INTJ" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_INTJ" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_INTJ" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_INTJ" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  INTP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_INTP{fill:#F6D538;}
+	.st1_INTP{fill:#FADFDB;}
+	.st2_INTP{fill:#3E3A39;}
+	.st3_INTP{fill:#F39800;}
+</style>
+<circle class="st0_INTP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_INTP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_INTP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_INTP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_INTP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ISFJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ISFJ{fill:#F6D538;}
+	.st1_ISFJ{fill:#FADFDB;}
+	.st2_ISFJ{fill:#3E3A39;}
+	.st3_ISFJ{fill:#473535;}
+	.st4_ISFJ{fill:#FD7D27;}
+	.st5_ISFJ{fill:#F39800;}
+	.st6_ISFJ{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_ISFJ" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_ISFJ" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_ISFJ" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_ISFJ" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_ISFJ" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_ISFJ" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_ISFJ" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_ISFJ" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_ISFJ" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_ISFJ" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_ISFJ" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  ISFP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ISFP{fill:#F6D538;}
+	.st1_ISFP{fill:#FADFDB;}
+	.st2_ISFP{fill:#3E3A39;}
+	.st3_ISFP{fill:#F39800;}
+</style>
+<circle class="st0_ISFP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ISFP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ISFP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ISFP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ISFP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`,
+  ISTJ: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ISTJ{fill:#F6D538;}
+	.st1_ISTJ{fill:#FADFDB;}
+	.st2_ISTJ{fill:#3E3A39;}
+	.st3_ISTJ{fill:#473535;}
+	.st4_ISTJ{fill:#FD7D27;}
+	.st5_ISTJ{fill:#F39800;}
+	.st6_ISTJ{fill:#FEFEFE;}
+</style>
+<g>
+	<circle class="st0_ISTJ" cx="165" cy="165" r="165"/>
+	<g>
+		<circle class="st1_ISTJ" cx="165" cy="165" r="101.36"/>
+	</g>
+	<path class="st2_ISTJ" d="M202,152.6c4.71,2.73,9.24,5.34,13.77,7.96c2.59,1.5,3.98,3.72,3.77,6.74c-0.37,5.28-5.88,8.13-10.63,5.44
+		c-7.29-4.12-14.51-8.35-21.77-12.54c-0.98-0.56-1.98-1.09-2.92-1.71c-4.43-2.91-4.52-9.1,0.02-11.81
+		c8.27-4.94,16.64-9.72,25.03-14.46c3.39-1.91,7.46-0.67,9.35,2.59c1.91,3.28,0.99,7.38-2.34,9.43c-4.13,2.54-8.38,4.89-12.58,7.32
+		C203.2,151.84,202.71,152.16,202,152.6z"/>
+	<path class="st2_ISTJ" d="M131.34,152.57c-4.9-2.83-9.51-5.46-14.08-8.15c-2.8-1.65-4.02-4.39-3.44-7.44c0.54-2.9,2.76-5.03,5.79-5.57
+		c1.65-0.3,3.18,0.09,4.6,0.91c8.13,4.67,16.28,9.29,24.35,14.06c5.16,3.05,5.11,9.39-0.09,12.45c-7.97,4.68-15.98,9.29-24.01,13.86
+		c-3.75,2.13-7.87,1.06-9.87-2.42c-2-3.47-0.79-7.54,2.95-9.72C122.01,157.92,126.51,155.35,131.34,152.57z"/>
+	<g>
+		<path class="st3_ISTJ" d="M190.19,189.43c2.14,0.87,3.51,2.46,3.85,4.7c1.45,9.39-1.07,17.63-7.37,24.72c-0.1,0.11-0.25,0.18-0.37,0.26
+			c-0.26-0.28-0.5-0.6-0.79-0.84c-6.7-5.71-14.3-7.27-22.62-4.51c-5.57,1.85-9.78,5.49-12.49,10.76c-4.15-2.13-7.39-5.29-10.01-9.09
+			c-2.5-3.62-4.05-7.62-4.73-11.96c-0.38-2.44,0.28-4.51,2.23-6.1c0.1,0.53,0.2,1.06,0.3,1.59c0.85,4.4,4.53,7.05,8.97,6.46
+			c0.77-0.1,1.53-0.23,2.29-0.34c11.31-1.71,22.63-3.42,33.94-5.14c4.88-0.74,7.61-4.45,6.92-9.35
+			C190.26,190.19,190.23,189.81,190.19,189.43z"/>
+		<path class="st3_ISTJ" d="M190.19,189.43c0.04,0.38,0.07,0.77,0.12,1.15c0.69,4.9-2.03,8.61-6.92,9.35
+			c-11.31,1.72-22.63,3.43-33.94,5.14c-0.76,0.12-1.53,0.24-2.29,0.34c-4.44,0.59-8.12-2.06-8.97-6.46c-0.1-0.53-0.2-1.06-0.3-1.59
+			c0.96-0.92,2.17-1.32,3.44-1.51c15.04-2.28,30.08-4.56,45.12-6.83C187.73,188.83,188.99,188.86,190.19,189.43z"/>
+		<path class="st4_ISTJ" d="M150.4,224.52c2.72-5.27,6.93-8.91,12.49-10.76c8.32-2.76,15.92-1.19,22.62,4.51
+			c0.29,0.25,0.52,0.56,0.79,0.84c-0.73,1.32-1.97,2.15-3.1,3.04c-4.54,3.54-9.71,5.67-15.42,6.2c-5.71,0.53-11.21-0.47-16.35-3.12
+			C151.06,225.05,150.63,224.92,150.4,224.52z"/>
+	</g>
+	<g>
+		<path class="st5_ISTJ" d="M79.12,220.43c1.07-0.99,2.28-0.67,3.51-0.42c3.11,0.64,6.22,1.26,9.33,1.87c1.27,0.25,2.13-0.62,1.88-1.91
+			c-0.6-3.06-1.19-6.12-1.83-9.18c-0.12-0.56-0.03-0.98,0.29-1.45c3.57-5.25,5.15-11.06,4.58-17.38c-0.58-6.41-3.27-11.89-7.72-16.5
+			c-5.58-5.78-12.46-9.04-20.37-10.1c-8.93-1.19-17.33,0.43-24.94,5.37c-6.44,4.18-10.89,9.9-12.82,17.44
+			c-0.64,2.52-0.76,5.09-0.74,7.67c0.07,0.65,0.12,1.3,0.21,1.94c1.1,7.34,4.66,13.28,10.35,17.97c5.33,4.38,11.47,6.84,18.31,7.67
+			c4.49,0.54,8.92,0.26,13.32-0.76C74.77,222.13,76.94,221.27,79.12,220.43z M81.01,199.66c-2.96,0.01-5.33-2.32-5.35-5.25
+			c-0.02-2.97,2.36-5.4,5.3-5.41c2.93-0.01,5.33,2.36,5.34,5.28C86.32,197.29,84.01,199.65,81.01,199.66z M63.61,199.66
+			c-2.95-0.01-5.3-2.36-5.3-5.31c-0.01-2.95,2.43-5.37,5.37-5.35c2.96,0.02,5.31,2.42,5.28,5.41
+			C68.94,197.36,66.58,199.67,63.61,199.66z M46.27,199.66c-2.95-0.01-5.31-2.36-5.31-5.3c-0.01-2.95,2.42-5.37,5.36-5.36
+			c2.94,0.02,5.28,2.38,5.29,5.33C51.62,197.33,49.28,199.67,46.27,199.66z"/>
+		<path class="st6_ISTJ" d="M81.01,199.66c2.99-0.01,5.31-2.37,5.29-5.38c-0.02-2.92-2.42-5.29-5.34-5.28c-2.94,0.01-5.32,2.44-5.3,5.41
+			C75.68,197.35,78.05,199.67,81.01,199.66z"/>
+		<path class="st6_ISTJ" d="M63.61,199.66c2.97,0.01,5.33-2.3,5.35-5.24c0.02-2.99-2.32-5.39-5.28-5.41c-2.94-0.02-5.37,2.4-5.37,5.35
+			C58.31,197.3,60.66,199.65,63.61,199.66z"/>
+		<path class="st6_ISTJ" d="M46.27,199.66c3,0.01,5.34-2.33,5.34-5.33c0-2.94-2.35-5.31-5.29-5.33c-2.94-0.02-5.37,2.41-5.36,5.36
+			C40.97,197.3,43.33,199.65,46.27,199.66z"/>
+	</g>
+</g>
+</svg>`,
+  ISTP: `<!-- Generator: Adobe Illustrator 25.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+<style type="text/css">
+	.st0_ISTP{fill:#F6D538;}
+	.st1_ISTP{fill:#FADFDB;}
+	.st2_ISTP{fill:#3E3A39;}
+	.st3_ISTP{fill:#F39800;}
+</style>
+<circle class="st0_ISTP" cx="165" cy="165" r="165"/>
+<g>
+	<circle class="st1_ISTP" cx="165" cy="165" r="101.36"/>
+	<g>
+		<path class="st2_ISTP" d="M244.56,140.47v-6.1c0-2.38-1.94-4.32-4.33-4.32h-2.92h-62.59c-1.02,0-2,0.35-2.77,1l-4.17,3.47
+			c-1.6,1.34-3.94,1.34-5.55,0l-4.17-3.47c-0.77-0.65-1.76-1-2.77-1H92.69h-2.92c-2.39,0-4.33,1.94-4.33,4.32v6.1
+			c0,0.94-0.14,2.29,2.41,4.07c0,0,3.56,2.03,4.84,8.9c1.98,10.69,14.6,30.45,38.19,26.44c23.34-3.97,21.01-27.77,34.12-28.94
+			c13.11,1.17,10.78,24.97,34.12,28.94c23.6,4.01,36.21-15.75,38.19-26.44c1.28-6.87,4.84-8.9,4.84-8.9
+			C244.69,142.76,244.56,141.41,244.56,140.47z M106.1,158.19c-3.39-4.75-6.79-20,1.36-20s14.26,0,14.26,0
+			S111.87,141.58,106.1,158.19z M188.25,158.19c-3.39-4.75-6.79-20,1.36-20c8.14,0,14.26,0,14.26,0S194.02,141.58,188.25,158.19z"/>
+	</g>
+</g>
+<path class="st3_ISTP" d="M293.64,158.08c-0.05,0.83-0.63,0.99-1.19,1.17c-2.84,0.87-5.66,1.78-8.52,2.59c-3.33,0.95-5.51,2.99-6.48,6.34
+	c-0.84,2.89-1.76,5.76-2.62,8.64c-0.19,0.62-0.35,1.27-1.13,1.26c-0.72-0.01-0.87-0.65-1.04-1.21c-0.93-3.04-1.84-6.08-2.79-9.11
+	c-0.9-2.89-2.79-4.81-5.69-5.7c-3.03-0.93-6.07-1.86-9.1-2.8c-0.59-0.18-1.3-0.31-1.24-1.13c0.05-0.7,0.66-0.85,1.23-1.03
+	c2.96-0.89,5.92-1.8,8.87-2.71c3.07-0.94,5.1-2.91,6.01-6.02c0.87-2.97,1.79-5.92,2.7-8.87c0.16-0.53,0.26-1.19,1.04-1.2
+	c0.83-0.01,0.96,0.65,1.14,1.24c0.9,2.96,1.82,5.91,2.71,8.87c0.93,3.1,2.96,5.07,6.04,6c2.96,0.89,5.91,1.8,8.87,2.71
+	C293.01,157.29,293.58,157.44,293.64,158.08z"/>
+<path class="st3_ISTP" d="M307.11,116.54c-0.07,0.55-0.5,0.7-0.95,0.83c-1.81,0.54-3.6,1.14-5.42,1.64c-2.38,0.66-3.95,2.07-4.61,4.48
+	c-0.51,1.87-1.11,3.71-1.68,5.56c-0.13,0.44-0.23,0.97-0.8,0.99c-0.61,0.03-0.67-0.55-0.8-0.97c-0.58-1.89-1.15-3.79-1.72-5.69
+	c-0.64-2.15-1.97-3.59-4.17-4.22c-1.9-0.55-3.78-1.18-5.68-1.77c-0.49-0.15-1.1-0.22-1.09-0.85c0.02-0.65,0.69-0.66,1.15-0.81
+	c1.84-0.59,3.69-1.16,5.55-1.69c2.3-0.66,3.65-2.2,4.29-4.46c0.52-1.82,1.09-3.62,1.66-5.42c0.13-0.42,0.18-0.97,0.8-0.98
+	c0.63-0.01,0.68,0.54,0.81,0.96c0.59,1.89,1.15,3.79,1.72,5.69c0.64,2.16,2.02,3.56,4.2,4.19c1.9,0.55,3.8,1.13,5.69,1.72
+	C306.46,115.89,306.97,115.95,307.11,116.54z"/>
+</svg>`
+};
+
+const QUESTIONS = [
+  // 1 EI — 輕鬆暖身，社交場景最容易帶入
+  { q:"去參加商會或創業聚會，你通常會如何認識其他老闆？", a:"主動出擊，四處遞名片並熱情介紹自己公司的服務。", b:"先在旁邊聽大家聊什麼，遇到氣場合的人再深入交談。", dim:"EI" },
+  // 2 TF — 職場決策，大多數老闆都有感
+  { q:"團隊提出一個超出預算的行銷提案，你通常會：", a:"堅持看數據說話，投資報酬率算不過來就直接退件。", b:"怕打擊團隊熱情與士氣，會加減撥點預算讓他們試水溫。", dim:"TF" },
+  // 3 SN — 設備採購，具體且高代入感
+  { q:"決定是否採購昂貴的新設備時，你會先關注：", a:"具體折舊年限、每月攤提多少，以及現金流是否負擔得起。", b:"這台設備能為公司帶來多少未來競爭力與業務可能性。", dim:"SN" },
+  // 4 JP — 空閒時間選擇，輕鬆但很能照出風格
+  { q:"今天難得沒有客戶找你，突然多出 1 小時空檔，你會：", a:"立刻打開記帳軟體，把累積的發票跟對帳單核對完畢。", b:"隨性研究市場新商業模式，或思考產品下一步怎麼轉型。", dim:"JP" },
+  // 5 EI — 合夥人打斷，情境感強、張力剛好
+  { q:"正在對帳時，合夥人突然找你討論明年的擴張計畫，你會怎麼做：", a:"放下帳本，跟他開始腦力激盪想新點子。", b:"請他先說重點，等自己手邊的數字對完後再討論。", dim:"EI" },
+  // 6 TF — 資金緊縮，決策壓力升溫，銜接決策類
+  { q:"當公司面臨資金緊縮，必須砍掉部分開銷時，你通常會：", a:"攤開報表，冷靜客觀地直接砍掉目前未能獲利的項目支出。", b:"考量牽涉的員工與長期合作廠商，尋找傷害最低的折衷方案。", dim:"TF" },
+  // 7 SN — 軟體導入，換個輕鬆技術場景作為緩衝
+  { q:"剛導入一套新的雲端記帳軟體，你比較喜歡：", a:"乖乖照著系統的引導，實際輸入收支來熟悉操作介面。", b:"先確認能不能直接串接現有 POS 機或電商平台，了解整體系統架構。", dim:"SN" },
+  // 8 JP — 記帳習慣，日常感，讓人喘口氣
+  { q:"你傾向如何管理公司每個月的記帳任務？", a:"嚴格規定自己或員工，在每月 5 號前完成憑證歸檔對齊。", b:"先把發票收集起來，等報稅期限快到了再一口氣整理。", dim:"JP" },
+  // 9 EI — 與外部交涉，比題 1 更有壓力感，放中後段
+  { q:"面對需要跟外部會計師交涉財務狀況時，你通常會：", a:"直接打電話或見面口頭討論，快速了解如何節稅貸款。", b:"先把財報與現金流整理成試算表，寄 Email 請對方評估。", dim:"EI" },
+  // 10 TF — 會計師警告，帶點緊張感，決策收尾
+  { q:"當會計師警告你「毛利率太低、費用太高」時，最先想的是：", a:"「立刻攤開各項費用明細！到底哪幾項指標偏離業界平均？」", b:"「糟了，會計師是不是覺得我經營得很差？公司要倒了嗎？」", dim:"TF" },
+  // 11 SN — 年度目標規劃，視野拉高，讓情緒緩和
+  { q:"在規劃公司的年度目標時，你最不能忍受的是：", a:"只有「成為業界第一」的空泛口號，卻沒編列具體預算。", b:"花一小時糾結砍幾百塊文具費，卻不討論如何開發新市場。", dim:"SN" },
+  // 12 JP — 成就感作結，正面收尾，讓人帶著好情緒等結果
+  { q:"創業過程中，哪種時刻會讓你覺得最有成就感？", a:"看到公司營收漂亮達標，財報穩定健康成長。", b:"成功談下充滿未知的創新合作，在市場上殺出一條新血路。", dim:"JP" },
+];
+
+const DIM_A = { EI:"E", SN:"S", TF:"T", JP:"J" };
+const DIM_B = { EI:"I", SN:"N", TF:"F", JP:"P" };
+
+const MBTI_DATA = {
+  ESTJ:{ headline:"講求效率的領導型老闆", keywords:["#超強執行力","#可靠","#直率"], desc50:"你天生自帶強大氣場，做事講求效率與規則。公司的投資要過你這關，得先拿出具體計劃再說！不過有時候也可以多聽聽內部員工的意見，讓團隊更有參與感喔！", tips:"" },
+  ESTP:{ headline:"活力滿滿的行動派老闆", keywords:["#活在當下","#直覺敏銳","#熱愛挑戰"], desc50:"比起長遠規劃，你更擅長抓住眼前的賺錢機會，看到機會先衝再說。不過在熱血行動後，最好多確認財務狀況，才能讓公司走得更長遠。", tips:"" },
+  ESFJ:{ headline:"最講人情的佛心老闆", keywords:["#樂於助人","#討人喜歡","#觀察力強"], desc50:"把公司當自己家在經營的你，精打細算卻不忘人情。別什麼都自己來，試著開權限讓員工分工管帳，你只需專注看財報抓大方向。", tips:"" },
+  ESFP:{ headline:"自由奔放的熱情老闆", keywords:["#活在當下","#社交達人","#好相處"], desc50:"錢沒有不見，只是變成你喜歡的樣子。小心因搏感情讓應酬費用嚴重超支，盡情社交之餘，記得按時記帳、定期看帳，公司經營更安心。", tips:"" },
+  ENTJ:{ headline:"有遠見魄力的天才老闆", keywords:["#顧全大局","#好勝心強","#直率"], desc50:"你天生就是當老闆的料！懂看大局，一旦發現哪裡不賺錢，砍預算也絕不手軟。記得定期看財報，用真實數據驗證你的商業直覺。", tips:"" },
+  ENTP:{ headline:"鬼靈精怪的瘋狂老闆", keywords:["#不按牌理出牌","#勇於挑戰","#反應快"], desc50:"創意力爆棚的你，滿腦子都是鬼點子。記帳容易有頭沒尾，先從大項花費開始記起，總比什麼都沒記來的好喔！", tips:"" },
+  ENFJ:{ headline:"值得追隨的親民老闆", keywords:["#天生領袖","#替人著想","#超強親和力"], desc50:"你總能用自己的信念和熱情影響身邊的人，深得人心！守護公司得先顧好現金流，別因顧及情面而不好意思向客戶催款，該收的錢要按時追回喔！", tips:"" },
+  ENFP:{ headline:"熱血追夢的冒險型老闆", keywords:["#富想像力","#充滿好奇心","#熱情"], desc50:"只要理念對了，要你砸再多錢也願意！不妨每週固定撥一天整理帳務，回頭確認錢都花在哪裡，才不會衝太快喔！", tips:"" },
+  ISTJ:{ headline:"按部就班的細節控老闆", keywords:["#言出必行","#守規矩","#自律"], desc50:"你做事有一套自己的 SOP，對記帳有嚴格的要求，一旦發現數字對不上就倍感焦慮。學會抓大放小，才不會累死自己喔！", tips:"" },
+  ISTP:{ headline:"好奇心爆棚的自由派老闆", keywords:["#條理分明","#充滿神秘感","#獨行俠"], desc50:"你的反應很快，遇到財務問題時，總能迅速抓到關鍵、找出解法。試著把眼光放遠一點，可以多留意團隊的感受，帶人更要帶心。", tips:"" },
+  ISFJ:{ headline:"無私奉獻的守護型老闆", keywords:["#樂於助人","#體貼","#負責"], desc50:"你總是默默把事情做到最好，就連記帳也不馬虎。記帳不用一開始就要求完美，也要適時保留一點彈性喔！", tips:"" },
+  ISFP:{ headline:"活在當下的高美感老闆", keywords:["#樂於助人","#美感至上","#包容"], desc50:"創業帶來的成就感，比賺錢本身更讓你著迷。重視質感與感受的你，感性之外，經營終究得顧及現實數字喔！", tips:"" },
+  INTJ:{ headline:"冷靜果斷的計畫通老闆", keywords:["#完美主義","#高效率","#獨立"], desc50:"你擅長規劃，懂得控制支出和預算，最受不了把錢花在沒效率的地方！規劃預算時不妨保留一點彈性，別太走火入魔唷！", tips:"" },
+  INTP:{ headline:"不小心穿越到商業世界的科技派老闆", keywords:["#理智滿分","#重視邏輯","#冷靜"], desc50:"你總是獨立思考，凡事用數據說話，擅長分析卻討厭死板規則。與團隊檢討預算時，多留意溝通溫度，才不會傷了團隊和氣喔！", tips:"" },
+  INFJ:{ headline:"超前部署的細膩型老闆", keywords:["#洞察人心","#直覺敏銳","#有遠見"], desc50:"你總能察覺他人沒說出口的感受。對你來說，經營公司不只是賺錢，更想做一件對人有幫助的事。注意提前規劃好預算，避免財務吃緊。", tips:"" },
+  INFP:{ headline:"以人為本的療癒系老闆", keywords:["#洞察人心","#富有同理心","#喜愛自由發揮"], desc50:"只要讓你覺得有意義，你就會全力投入！雖然理想很豐滿，每週記帳或許有點乏味，卻能幫你把錢用在真正重要的地方喔！", tips:"" },
+};
+
+let answers = new Array(12).fill(null);
+let current = 0;
+
+function startQuiz() {
+  document.getElementById('screen-intro').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  const q = QUESTIONS[current];
+  document.getElementById('question-area').innerHTML = `
+    <div class="question-card">
+      <div class="q-number">第 ${current+1} 題，共 12 題</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        <button class="option-btn ${answers[current]==='a'?'selected':''}" onclick="selectOpt('a')">
+          <span>${q.a}</span>
+        </button>
+        <button class="option-btn ${answers[current]==='b'?'selected':''}" onclick="selectOpt('b')">
+          <span>${q.b}</span>
+        </button>
+      </div>
+    </div>`;
+  document.getElementById('progress-text').textContent = `${current+1} / 12`;
+  document.getElementById('progress-bar').style.width = `${(current/12)*100}%`;
+  document.getElementById('btn-prev').disabled = current === 0;
+  const isLast = current === 11;
+  document.getElementById('btn-next').style.display = isLast ? 'none' : '';
+  document.getElementById('btn-submit').style.display = isLast ? 'inline-block' : 'none';
+}
+
+function selectOpt(val) {
+  answers[current] = val;
+  document.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.classList.toggle('selected', (i===0&&val==='a')||(i===1&&val==='b'));
+  });
+}
+
+function nextQ() {
+  if (answers[current] === null) {
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach(b => { b.style.borderColor = '#2F7E9A'; });
+    setTimeout(() => btns.forEach(b => { b.style.borderColor = ''; }), 600);
+    return;
+  }
+  if (current < 11) { current++; renderQ(); }
+}
+function prevQ() { if (current > 0) { current--; renderQ(); } }
+
+function submitQuiz() {
+  const unanswered = answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    alert(`還有 ${unanswered} 題未作答，請完成所有題目後再提交！`);
+    current = answers.findIndex(a => a === null);
+    renderQ(); return;
+  }
+  showResult(calcMBTI());
+}
+
+function calcMBTI() {
+  const c = { E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0 };
+  QUESTIONS.forEach((q,i) => { c[answers[i]==='a'?DIM_A[q.dim]:DIM_B[q.dim]]++; });
+  return (c.E>=c.I?'E':'I')+(c.S>=c.N?'S':'N')+(c.T>=c.F?'T':'F')+(c.J>=c.P?'J':'P');
+}
+
+function getScores() {
+  const c = { E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0 };
+  QUESTIONS.forEach((q,i) => { c[answers[i]==='a'?DIM_A[q.dim]:DIM_B[q.dim]]++; });
+  return c;
+}
+
+function showResult(type) {
+  document.getElementById('screen-quiz').style.display = 'none';
+  document.getElementById('screen-result').style.display = 'block';
+  const data = MBTI_DATA[type];
+
+  // 人格標題
+  document.getElementById('res-headline').textContent = data.headline;
+  document.getElementById('res-type').textContent = type;
+
+  // SVG 圖片
+  const circle = document.getElementById('res-img-placeholder');
+  if (SVG_MAP && SVG_MAP[type]) {
+    circle.innerHTML = SVG_MAP[type];
+    const svg = circle.querySelector('svg');
+    if (svg) { svg.style.width = '100%'; svg.style.height = '100%'; }
+  }
+
+  // 關鍵字
+  const keywords = data.keywords || ['#待補', '#待補', '#待補'];
+  document.getElementById('res-keywords').innerHTML = keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('');
+
+  // 人格特質解說
+  document.getElementById('res-desc').textContent = data.desc50 || '';
+
+  window.scrollTo(0,0);
+}
+
+function retryQuiz() {
+  answers = new Array(12).fill(null);
+  current = 0;
+  document.getElementById('screen-result').style.display = 'none';
+  document.getElementById('screen-intro').style.display = 'flex';
+}
+</script>
+</body>
+</html>
